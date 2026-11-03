@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob: https://i.ytimg.com; connect-src https://api.github.com; frame-src https://www.youtube-nocookie.com https://platform.twitter.com; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d1424">
+<title>メモ</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login" hidden>
+  <form id="form-login" class="login-card" autocomplete="off">
+    <div class="login-icon">📝</div>
+    <h1>メモ</h1>
+    <label class="field"><span>鍵(トークン)</span><input name="token" type="password" required spellcheck="false"></label>
+    <details class="login-more">
+      <summary>保存先</summary>
+      <div class="field-row">
+        <label class="field grow"><span>ユーザー名</span><input name="owner" required spellcheck="false"></label>
+        <label class="field grow"><span>リポジトリ</span><input name="repo" required spellcheck="false"></label>
+      </div>
+    </details>
+    <label class="check"><input type="checkbox" name="remember" checked> このブラウザに鍵を覚えておく</label>
+    <p class="hint">共用の PC ではチェックを外してください。タブを閉じると鍵が消え、メモの控えも残しません。</p>
+    <p class="status" id="login-status"></p>
+    <button type="submit" class="primary wide">ログイン</button>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <aside id="sidebar">
+    <div class="side-head">
+      <span class="app-name">メモ</span>
+      <button type="button" class="icon-btn" id="btn-account" title="保存先・ログアウト" aria-label="保存先・ログアウト">⚙</button>
+    </div>
+    <nav id="channel-list" aria-label="チャンネル"></nav>
+    <button type="button" class="add-channel" id="btn-add-channel">＋ チャンネルを追加</button>
+    <button type="button" class="side-foot" id="sync-status"></button>
+  </aside>
+  <div id="scrim"></div>
+  <main id="main">
+    <header class="chan-head">
+      <button type="button" class="icon-btn only-narrow" id="btn-menu" aria-label="チャンネル一覧">☰</button>
+      <span class="chan-head-emoji" id="chan-emoji"></span>
+      <h1 id="chan-name"></h1>
+      <div class="chan-head-tools">
+        <button type="button" class="pill" id="btn-hide-done" hidden>完了を隠す</button>
+        <button type="button" class="icon-btn" id="btn-chan-edit" title="チャンネルを編集" aria-label="チャンネルを編集">✎</button>
+      </div>
+    </header>
+    <div id="messages"><div id="feed"></div></div>
+    <form id="composer" autocomplete="off">
+      <div id="attachments"></div>
+      <div class="composer-box">
+        <label class="attach-btn" title="画像を追加">＋<input type="file" id="file-input" accept="image/*" multiple hidden></label>
+        <textarea id="input" rows="1"></textarea>
+        <button type="submit" class="send-btn" id="btn-send" aria-label="送信">➤</button>
+      </div>
+      <div class="composer-hint">Enter で送信 / Shift+Enter で改行 / 画像は貼り付けかドラッグ / ↑ で直前のメモを編集</div>
+    </form>
+    <div id="drop-overlay" hidden>画像をドロップして追加</div>
+  </main>
+</div>
+
+<dialog id="dlg-channel">
+  <form id="form-channel">
+    <h2 id="dlg-channel-title">チャンネルを追加</h2>
+    <div class="field-row">
+      <label class="field small"><span>絵文字</span><input name="emoji" maxlength="8"></label>
+      <label class="field grow"><span>名前</span><input name="chname" required maxlength="40"></label>
+    </div>
+    <label class="field"><span>説明(チャンネルのいちばん上に出る一文)</span><input name="desc" maxlength="120"></label>
+    <label class="check"><input type="checkbox" name="todo"> やることリストにする(✅ を付けられる)</label>
+    <div class="dlg-actions">
+      <button type="button" class="danger" id="btn-chan-delete">チャンネルを削除</button>
+      <span class="spacer"></span>
+      <button type="button" class="secondary" id="btn-chan-cancel">キャンセル</button>
+      <button type="submit" class="primary">保存</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlg-account">
+  <h2>保存先</h2>
+  <p class="muted" id="account-info"></p>
+  <p class="muted">ログアウトすると、このブラウザから鍵と、読み込んだメモの控えを消します。GitHub に保存したメモは消えません。</p>
+  <div class="dlg-actions">
+    <button type="button" class="danger" id="btn-logout">ログアウト</button>
+    <span class="spacer"></span>
+    <button type="button" class="secondary" id="btn-account-close">閉じる</button>
+  </div>
+</dialog>
+
+<div id="lightbox" hidden><img alt=""></div>
+
+<script src="store.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
